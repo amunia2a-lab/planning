@@ -1,0 +1,23 @@
+# Garage Planning Widget
+
+Widget Planning pour Notion, prêt à déployer sur GitHub + Vercel.
+
+## Lancer en local
+
+```bash
+npm install
+npm run dev
+```
+
+Puis ouvrir `http://localhost:3000`.
+
+## Déploiement sur Vercel
+
+1. Crée un repo GitHub
+2. Envoie ces fichiers dans le repo
+3. Importe le repo dans Vercel
+4. Déploie
+
+## Prochaine étape
+
+Brancher Google Agenda pour remplacer les fausses données.
