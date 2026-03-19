@@ -1,6 +1,7 @@
 type Appointment = {
   id: string;
   time: string;
+  model: string;
   plate: string;
   client: string;
   intervention: string;
@@ -11,6 +12,7 @@ const appointments: Appointment[] = [
   {
     id: "1",
     time: "08:30",
+    model: "Peugeot 208",
     plate: "AB-124-GD",
     client: "Colin",
     intervention: "Embrayage",
@@ -19,6 +21,7 @@ const appointments: Appointment[] = [
   {
     id: "2",
     time: "10:00",
+    model: "Renault Clio 4",
     plate: "EF-456-HJ",
     client: "Martin",
     intervention: "Révision",
@@ -27,6 +30,7 @@ const appointments: Appointment[] = [
   {
     id: "3",
     time: "14:00",
+    model: "Audi A3",
     plate: "GH-782-KL",
     client: "Dupont",
     intervention: "Diagnostic",
@@ -35,6 +39,7 @@ const appointments: Appointment[] = [
   {
     id: "4",
     time: "16:00",
+    model: "BMW Série 1",
     plate: "JK-903-MN",
     client: "Lucas",
     intervention: "Freinage",
@@ -48,11 +53,9 @@ export default function Page() {
       <div style={styles.shell}>
         <section style={styles.widget}>
           <div style={styles.topBar}>
-            <div>
-              <div style={styles.titleRow}>
-                <span style={styles.calendarIcon}>📅</span>
-                <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
-              </div>
+            <div style={styles.titleRow}>
+              <span style={styles.calendarIcon}>📅</span>
+              <h1 style={styles.title}>Planning - Aujourd'hui</h1>
             </div>
 
             <div style={styles.topActions}>
@@ -61,31 +64,21 @@ export default function Page() {
             </div>
           </div>
 
-          <div style={styles.centerWrap}>
-            <div style={styles.centerPill}>🔧 {appointments.length} Interventions aujourd&apos;hui</div>
-          </div>
-
           <div style={styles.rowsWrap}>
             {appointments.map((item) => (
               <div key={item.id} style={styles.row}>
-                <div style={styles.timeCard}>
-                  <span style={styles.timeIcon}>🕘</span>
-                  <span>{item.time}</span>
-                </div>
+                <div style={styles.timeCard}>{item.time}</div>
 
                 <div style={styles.carThumb}>🚗</div>
 
-                <div style={styles.infoBlock}>
-                  <div style={styles.mainLine}>
-                    <div style={styles.nameBlock}>
-                      <div style={styles.carName}>{item.plate}</div>
-                      <div style={styles.clientName}>{item.client}</div>
-                    </div>
-
-                    <div style={styles.interventionPill}>{item.intervention}</div>
-                  </div>
-
-                  <div style={styles.subLine}>Rendez-vous atelier</div>
+                <div style={styles.inlineInfo}>
+                  <span style={styles.model}>{item.model}</span>
+                  <span style={styles.separator}>|</span>
+                  <span style={styles.plate}>{item.plate}</span>
+                  <span style={styles.dot}>•</span>
+                  <span style={styles.client}>{item.client}</span>
+                  <span style={styles.dot}>•</span>
+                  <span style={styles.intervention}>{item.intervention}</span>
                 </div>
 
                 <div style={styles.statusArea}>
@@ -217,21 +210,6 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: "0 10px 24px rgba(15, 23, 42, 0.06)",
     cursor: "pointer",
   },
-  centerWrap: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: 24,
-  },
-  centerPill: {
-    padding: "16px 28px",
-    borderRadius: 999,
-    background: "rgba(255,255,255,0.92)",
-    border: "1px solid #e2e8f0",
-    boxShadow: "0 14px 34px rgba(15, 23, 42, 0.06)",
-    fontSize: 18,
-    fontWeight: 800,
-    color: "#0f172a",
-  },
   rowsWrap: {
     display: "flex",
     flexDirection: "column",
@@ -239,7 +217,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   row: {
     display: "grid",
-    gridTemplateColumns: "150px 72px 1fr auto",
+    gridTemplateColumns: "140px 72px 1fr auto",
     alignItems: "center",
     gap: 18,
     background: "rgba(255,255,255,0.88)",
@@ -255,13 +233,10 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
     color: "#0f172a",
     fontWeight: 800,
     fontSize: 20,
-  },
-  timeIcon: {
-    fontSize: 20,
+    whiteSpace: "nowrap",
   },
   carThumb: {
     width: 72,
@@ -272,46 +247,45 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     fontSize: 32,
+    flexShrink: 0,
   },
-  infoBlock: {
-    minWidth: 0,
-  },
-  mainLine: {
+  inlineInfo: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
-    flexWrap: "wrap",
+    gap: 10,
+    flex: 1,
+    flexWrap: "nowrap",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    minWidth: 0,
   },
-  nameBlock: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
-  },
-  carName: {
-    fontSize: 28,
+  model: {
     fontWeight: 800,
+    fontSize: 24,
     color: "#0f172a",
-    letterSpacing: -0.5,
   },
-  clientName: {
+  plate: {
+    fontWeight: 700,
+    color: "#1d4ed8",
     fontSize: 16,
+  },
+  client: {
+    color: "#334155",
+    fontWeight: 600,
+    fontSize: 16,
+  },
+  intervention: {
     color: "#64748b",
     fontWeight: 600,
+    fontSize: 16,
   },
-  interventionPill: {
-    padding: "12px 18px",
-    borderRadius: 18,
-    background: "#eef2ff",
-    color: "#334155",
+  separator: {
+    color: "#cbd5e1",
     fontWeight: 700,
-    fontSize: 15,
-    whiteSpace: "nowrap",
   },
-  subLine: {
-    marginTop: 8,
+  dot: {
     color: "#94a3b8",
-    fontSize: 14,
+    fontWeight: 700,
   },
   statusArea: {
     display: "flex",
@@ -327,6 +301,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 18,
     fontSize: 16,
     fontWeight: 800,
+    whiteSpace: "nowrap",
   },
   moreButton: {
     width: 46,
