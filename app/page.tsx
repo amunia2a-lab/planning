@@ -4,7 +4,7 @@ type Appointment = {
   plate: string;
   client: string;
   intervention: string;
-  status: "En cours" | "À venir" | "Terminé";
+  status: "En cours" | "En attente" | "Terminé";
 };
 
 const appointments: Appointment[] = [
@@ -22,7 +22,7 @@ const appointments: Appointment[] = [
     plate: "EF-456-HJ",
     client: "Martin",
     intervention: "Révision",
-    status: "À venir",
+    status: "En attente",
   },
   {
     id: "3",
@@ -30,7 +30,7 @@ const appointments: Appointment[] = [
     plate: "GH-782-KL",
     client: "Dupont",
     intervention: "Diagnostic",
-    status: "À venir",
+    status: "En cours",
   },
   {
     id: "4",
@@ -45,284 +45,328 @@ const appointments: Appointment[] = [
 export default function Page() {
   return (
     <main style={styles.page}>
-      <section style={styles.widget}>
-        <div style={styles.header}>
-          <div>
-            <p style={styles.kicker}>Dashboard garage</p>
-            <h1 style={styles.title}>Planning</h1>
-            <p style={styles.subtitle}>Rendez-vous du jour</p>
-          </div>
-
-          <button style={styles.newButton}>+ Nouveau</button>
-        </div>
-
-        <div style={styles.centerWrap}>
-          <div style={styles.centerCard}>
-            <p style={styles.centerLabel}>Aujourd&apos;hui</p>
-            <div style={styles.centerValue}>{appointments.length}</div>
-            <p style={styles.centerSub}>Interventions</p>
-          </div>
-        </div>
-
-        <div style={styles.list}>
-          {appointments.map((item) => (
-            <div key={item.id} style={styles.row}>
-              <div style={styles.timeBox}>{item.time}</div>
-
-              <div style={styles.carIcon}>🚗</div>
-
-              <div style={styles.mainInfo}>
-                <div style={styles.topLine}>
-                  <span style={styles.plate}>{item.plate}</span>
-                  <span style={styles.client}>{item.client}</span>
-                </div>
-                <p style={styles.intervention}>{item.intervention}</p>
+      <div style={styles.shell}>
+        <section style={styles.widget}>
+          <div style={styles.topBar}>
+            <div>
+              <div style={styles.titleRow}>
+                <span style={styles.calendarIcon}>📅</span>
+                <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
               </div>
-
-              <div style={styles.statusWrap}>
-                <StatusBadge status={item.status} />
-              </div>
-
-              <button style={styles.menuButton}>⋯</button>
             </div>
-          ))}
-        </div>
 
-        <div style={styles.footerCard}>
-          <div>
-            <p style={styles.footerTitle}>Prochain rendez-vous</p>
-            <p style={styles.footerText}>
-              {appointments[0].time} · {appointments[0].client} ·{" "}
-              {appointments[0].intervention}
-            </p>
+            <div style={styles.topActions}>
+              <button style={styles.iconButton}>＋</button>
+              <button style={styles.iconButton}>⋮</button>
+            </div>
           </div>
-        </div>
-      </section>
+
+          <div style={styles.centerWrap}>
+            <div style={styles.centerPill}>🔧 {appointments.length} Interventions aujourd&apos;hui</div>
+          </div>
+
+          <div style={styles.rowsWrap}>
+            {appointments.map((item) => (
+              <div key={item.id} style={styles.row}>
+                <div style={styles.timeCard}>
+                  <span style={styles.timeIcon}>🕘</span>
+                  <span>{item.time}</span>
+                </div>
+
+                <div style={styles.carThumb}>🚗</div>
+
+                <div style={styles.infoBlock}>
+                  <div style={styles.mainLine}>
+                    <div style={styles.nameBlock}>
+                      <div style={styles.carName}>{item.plate}</div>
+                      <div style={styles.clientName}>{item.client}</div>
+                    </div>
+
+                    <div style={styles.interventionPill}>{item.intervention}</div>
+                  </div>
+
+                  <div style={styles.subLine}>Rendez-vous atelier</div>
+                </div>
+
+                <div style={styles.statusArea}>
+                  <StatusBadge status={item.status} />
+                  <button style={styles.moreButton}>⋯</button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={styles.bottomStats}>
+            <div style={styles.statCard}>
+              <div style={styles.statIcon}>🔧</div>
+              <div>
+                <div style={styles.statValue}>{appointments.length}</div>
+                <div style={styles.statLabel}>Interventions</div>
+              </div>
+            </div>
+
+            <div style={styles.statCard}>
+              <div style={styles.statIcon}>🚘</div>
+              <div>
+                <div style={styles.statValue}>2</div>
+                <div style={styles.statLabel}>En cours</div>
+              </div>
+            </div>
+
+            <div style={styles.statCard}>
+              <div style={styles.statIcon}>⏰</div>
+              <div>
+                <div style={styles.statValue}>1</div>
+                <div style={styles.statLabel}>En attente</div>
+              </div>
+            </div>
+
+            <div style={styles.statCard}>
+              <div style={styles.statIcon}>✅</div>
+              <div>
+                <div style={styles.statValue}>1</div>
+                <div style={styles.statLabel}>Terminée</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
 
 function StatusBadge({ status }: { status: Appointment["status"] }) {
-  const map: Record<Appointment["status"], React.CSSProperties> = {
+  const stylesMap: Record<Appointment["status"], React.CSSProperties> = {
     "En cours": {
-      background: "#fff7ed",
-      color: "#c2410c",
-      border: "1px solid #fdba74",
+      background: "#e8f3ff",
+      color: "#2563eb",
+      border: "1px solid #bfdbfe",
     },
-    "À venir": {
-      background: "#eff6ff",
-      color: "#1d4ed8",
-      border: "1px solid #93c5fd",
+    "En attente": {
+      background: "#fff1df",
+      color: "#b45309",
+      border: "1px solid #fcd34d",
     },
     "Terminé": {
-      background: "#ecfdf5",
-      color: "#047857",
-      border: "1px solid #86efac",
+      background: "#eaf8ef",
+      color: "#15803d",
+      border: "1px solid #bbf7d0",
     },
   };
 
-  return <span style={{ ...styles.badge, ...map[status] }}>{status}</span>;
+  return <span style={{ ...styles.badge, ...stylesMap[status] }}>{status}</span>;
 }
 
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
+    padding: "28px",
     margin: 0,
-    padding: "32px 20px",
     background:
-      "linear-gradient(180deg, #f8fbff 0%, #f1f5f9 45%, #eef4fb 100%)",
+      "radial-gradient(circle at left bottom, rgba(191,219,254,0.55), transparent 28%), linear-gradient(180deg, #f6f8fc 0%, #eef3fa 100%)",
     fontFamily:
       'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
   },
-  widget: {
-    maxWidth: 980,
+  shell: {
+    maxWidth: 1280,
     margin: "0 auto",
-    background: "rgba(255,255,255,0.88)",
-    border: "1px solid rgba(255,255,255,0.8)",
-    borderRadius: 32,
-    padding: 28,
-    boxShadow: "0 24px 80px rgba(15, 23, 42, 0.10)",
-    backdropFilter: "blur(14px)",
   },
-  header: {
+  widget: {
+    background: "rgba(255,255,255,0.72)",
+    border: "1px solid rgba(255,255,255,0.85)",
+    borderRadius: 34,
+    padding: 28,
+    boxShadow: "0 28px 80px rgba(15, 23, 42, 0.10)",
+    backdropFilter: "blur(18px)",
+  },
+  topBar: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     gap: 16,
-    marginBottom: 28,
+    marginBottom: 22,
   },
-  kicker: {
-    margin: 0,
-    color: "#94a3b8",
-    fontSize: 14,
-    fontWeight: 600,
+  titleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+  },
+  calendarIcon: {
+    fontSize: 28,
   },
   title: {
-    margin: "6px 0 0",
-    color: "#0f172a",
-    fontSize: 42,
-    lineHeight: 1,
+    margin: 0,
+    fontSize: 28,
     fontWeight: 800,
-    letterSpacing: -1,
-  },
-  subtitle: {
-    margin: "10px 0 0",
-    color: "#64748b",
-    fontSize: 16,
-  },
-  newButton: {
-    border: "1px solid #e2e8f0",
-    background: "#ffffff",
     color: "#0f172a",
-    padding: "12px 18px",
+    letterSpacing: -0.5,
+  },
+  topActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+  },
+  iconButton: {
+    width: 52,
+    height: 52,
     borderRadius: 18,
-    fontSize: 14,
-    fontWeight: 700,
-    boxShadow: "0 8px 24px rgba(15, 23, 42, 0.06)",
+    border: "1px solid #e2e8f0",
+    background: "rgba(255,255,255,0.9)",
+    color: "#334155",
+    fontSize: 24,
+    boxShadow: "0 10px 24px rgba(15, 23, 42, 0.06)",
     cursor: "pointer",
   },
   centerWrap: {
     display: "flex",
     justifyContent: "center",
-    marginBottom: 28,
+    marginBottom: 24,
   },
-  centerCard: {
-    width: "100%",
-    maxWidth: 340,
-    borderRadius: 28,
-    padding: "24px 20px",
-    textAlign: "center",
-    background: "linear-gradient(180deg, #f8fbff 0%, #ffffff 100%)",
-    border: "1px solid #dbeafe",
-    boxShadow: "0 20px 50px rgba(59, 130, 246, 0.10)",
-  },
-  centerLabel: {
-    margin: 0,
-    color: "#3b82f6",
-    textTransform: "uppercase",
-    letterSpacing: "0.18em",
-    fontSize: 12,
+  centerPill: {
+    padding: "16px 28px",
+    borderRadius: 999,
+    background: "rgba(255,255,255,0.92)",
+    border: "1px solid #e2e8f0",
+    boxShadow: "0 14px 34px rgba(15, 23, 42, 0.06)",
+    fontSize: 18,
     fontWeight: 800,
-  },
-  centerValue: {
-    marginTop: 12,
-    fontSize: 54,
-    lineHeight: 1,
-    fontWeight: 900,
     color: "#0f172a",
   },
-  centerSub: {
-    margin: "8px 0 0",
-    color: "#64748b",
-    fontSize: 16,
-    fontWeight: 600,
-  },
-  list: {
+  rowsWrap: {
     display: "flex",
     flexDirection: "column",
     gap: 14,
   },
   row: {
-    display: "flex",
+    display: "grid",
+    gridTemplateColumns: "150px 72px 1fr auto",
     alignItems: "center",
-    gap: 16,
-    background: "#ffffff",
-    border: "1px solid #e2e8f0",
-    borderRadius: 24,
-    padding: 16,
-    boxShadow: "0 10px 30px rgba(15, 23, 42, 0.05)",
-    flexWrap: "wrap",
+    gap: 18,
+    background: "rgba(255,255,255,0.88)",
+    border: "1px solid #e5e7eb",
+    borderRadius: 28,
+    padding: 18,
+    boxShadow: "0 10px 26px rgba(15, 23, 42, 0.05)",
   },
-  timeBox: {
-    minWidth: 82,
-    height: 56,
-    borderRadius: 18,
+  timeCard: {
+    height: 74,
+    borderRadius: 20,
     background: "#f8fafc",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontWeight: 800,
+    gap: 10,
     color: "#0f172a",
-    fontSize: 18,
+    fontWeight: 800,
+    fontSize: 20,
   },
-  carIcon: {
-    width: 54,
-    height: 54,
-    borderRadius: 18,
-    background: "#eff6ff",
+  timeIcon: {
+    fontSize: 20,
+  },
+  carThumb: {
+    width: 72,
+    height: 72,
+    borderRadius: 22,
+    background: "linear-gradient(180deg, #eff6ff, #dbeafe)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 24,
-    flexShrink: 0,
+    fontSize: 32,
   },
-  mainInfo: {
-    flex: 1,
-    minWidth: 220,
+  infoBlock: {
+    minWidth: 0,
   },
-  topLine: {
+  mainLine: {
     display: "flex",
-    flexWrap: "wrap",
-    gap: 10,
     alignItems: "center",
+    justifyContent: "space-between",
+    gap: 16,
+    flexWrap: "wrap",
   },
-  plate: {
-    background: "#dbeafe",
-    color: "#1d4ed8",
-    borderRadius: 12,
-    padding: "6px 10px",
-    fontSize: 13,
+  nameBlock: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 6,
+  },
+  carName: {
+    fontSize: 28,
     fontWeight: 800,
-  },
-  client: {
     color: "#0f172a",
-    fontSize: 18,
-    fontWeight: 700,
+    letterSpacing: -0.5,
   },
-  intervention: {
-    margin: "6px 0 0",
+  clientName: {
+    fontSize: 16,
     color: "#64748b",
-    fontSize: 15,
+    fontWeight: 600,
   },
-  statusWrap: {
-    marginLeft: "auto",
+  interventionPill: {
+    padding: "12px 18px",
+    borderRadius: 18,
+    background: "#eef2ff",
+    color: "#334155",
+    fontWeight: 700,
+    fontSize: 15,
+    whiteSpace: "nowrap",
+  },
+  subLine: {
+    marginTop: 8,
+    color: "#94a3b8",
+    fontSize: 14,
+  },
+  statusArea: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
   },
   badge: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "10px 14px",
-    borderRadius: 14,
-    fontSize: 14,
+    minWidth: 126,
+    padding: "12px 16px",
+    borderRadius: 18,
+    fontSize: 16,
     fontWeight: 800,
-    whiteSpace: "nowrap",
   },
-  menuButton: {
-    width: 44,
-    height: 44,
+  moreButton: {
+    width: 46,
+    height: 46,
     borderRadius: 16,
     border: "1px solid #e2e8f0",
     background: "#f8fafc",
-    color: "#475569",
-    fontSize: 22,
+    color: "#64748b",
+    fontSize: 24,
     cursor: "pointer",
   },
-  footerCard: {
-    marginTop: 18,
+  bottomStats: {
+    marginTop: 24,
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: 16,
+  },
+  statCard: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    background: "rgba(255,255,255,0.88)",
+    border: "1px solid #e5e7eb",
     borderRadius: 24,
-    padding: 18,
-    background: "#f8fafc",
-    border: "1px solid #e2e8f0",
+    padding: "18px 20px",
+    minHeight: 108,
   },
-  footerTitle: {
-    margin: 0,
+  statIcon: {
+    fontSize: 28,
+  },
+  statValue: {
+    fontSize: 34,
+    fontWeight: 900,
     color: "#0f172a",
-    fontSize: 15,
-    fontWeight: 700,
+    lineHeight: 1,
   },
-  footerText: {
-    margin: "6px 0 0",
+  statLabel: {
+    marginTop: 6,
+    fontSize: 15,
     color: "#64748b",
-    fontSize: 14,
+    fontWeight: 600,
   },
 };
