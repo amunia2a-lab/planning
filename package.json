@@ -19,3 +19,6 @@
     "autoprefixer": "10.4.20"
   }
 }
+git add .
+git commit -m "fix package.json"
+git push
