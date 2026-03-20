@@ -48,19 +48,19 @@ export default function Page() {
       <div style={styles.shell}>
         <section style={styles.widget}>
           <div style={styles.topBar}>
-            <div style={styles.leftHeader}>
+            <div style={styles.titleRow}>
+              <span style={styles.calendarIcon}>📅</span>
+              <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
+            </div>
+
+            <div style={styles.rightHeader}>
               <button style={styles.newButton}>+ Nouveau RDV</button>
 
               <div style={styles.navGroup}>
                 <button style={styles.navButton}>‹</button>
-                <span style={styles.dayPill}>Aujourd'hui</span>
+                <span style={styles.dayPill}>Aujourd&apos;hui</span>
                 <button style={styles.navButton}>›</button>
               </div>
-            </div>
-
-            <div style={styles.titleRow}>
-              <span style={styles.calendarIcon}>📅</span>
-              <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
             </div>
           </div>
 
@@ -86,42 +86,35 @@ export default function Page() {
             ))}
           </div>
 
-          <div style={styles.bottomStats}>
-            <div style={styles.statCard}>
-              <div style={styles.statIcon}>🔧</div>
-              <div>
-                <div style={styles.statValue}>{appointments.length}</div>
-                <div style={styles.statLabel}>Interventions</div>
-              </div>
-            </div>
-
-            <div style={styles.statCard}>
-              <div style={styles.statIcon}>🚘</div>
-              <div>
-                <div style={styles.statValue}>4</div>
-                <div style={styles.statLabel}>Véhicules</div>
-              </div>
-            </div>
-
-            <div style={styles.statCard}>
-              <div style={styles.statIcon}>🗓️</div>
-              <div>
-                <div style={styles.statValue}>Aujourd&apos;hui</div>
-                <div style={styles.statLabel}>Vue active</div>
-              </div>
-            </div>
-
-            <div style={styles.statCard}>
-              <div style={styles.statIcon}>✅</div>
-              <div>
-                <div style={styles.statValue}>4</div>
-                <div style={styles.statLabel}>Prévues</div>
-              </div>
-            </div>
+          <div style={styles.statsBar}>
+            <Stat icon="🔧" value="4" label="Interventions" />
+            <Stat icon="🚗" value="4" label="Véhicules" />
+            <Stat icon="📅" value="Aujourd'hui" label="Vue active" />
+            <Stat icon="✅" value="4" label="Prévues" />
           </div>
         </section>
       </div>
     </main>
+  );
+}
+
+function Stat({
+  icon,
+  value,
+  label,
+}: {
+  icon: string;
+  value: string;
+  label: string;
+}) {
+  return (
+    <div style={styles.statItem}>
+      <span style={styles.statIcon}>{icon}</span>
+      <div style={styles.statText}>
+        <span style={styles.statValue}>{value}</span>
+        <span style={styles.statLabel}>{label}</span>
+      </div>
+    </div>
   );
 }
 
@@ -155,7 +148,22 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 22,
     flexWrap: "wrap",
   },
-  leftHeader: {
+  titleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+  },
+  calendarIcon: {
+    fontSize: 28,
+  },
+  title: {
+    margin: 0,
+    fontSize: 28,
+    fontWeight: 800,
+    color: "#0f172a",
+    letterSpacing: -0.5,
+  },
+  rightHeader: {
     display: "flex",
     alignItems: "center",
     gap: 14,
@@ -198,21 +206,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#0f172a",
     fontWeight: 700,
     whiteSpace: "nowrap",
-  },
-  titleRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: 14,
-  },
-  calendarIcon: {
-    fontSize: 28,
-  },
-  title: {
-    margin: 0,
-    fontSize: 28,
-    fontWeight: 800,
-    color: "#0f172a",
-    letterSpacing: -0.5,
   },
   rowsWrap: {
     display: "flex",
@@ -302,35 +295,37 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 24,
     cursor: "pointer",
   },
-  bottomStats: {
-    marginTop: 24,
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: 16,
+  statsBar: {
+    marginTop: 20,
+    display: "flex",
+    gap: 12,
+    flexWrap: "wrap",
   },
-  statCard: {
+  statItem: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
-    background: "rgba(255,255,255,0.88)",
-    border: "1px solid #e5e7eb",
-    borderRadius: 24,
-    padding: "18px 20px",
-    minHeight: 108,
+    gap: 10,
+    padding: "10px 14px",
+    borderRadius: 14,
+    background: "#ffffff",
+    border: "1px solid #e2e8f0",
   },
   statIcon: {
-    fontSize: 28,
+    fontSize: 18,
+  },
+  statText: {
+    display: "flex",
+    flexDirection: "column",
   },
   statValue: {
-    fontSize: 34,
-    fontWeight: 900,
+    fontWeight: 800,
+    fontSize: 16,
     color: "#0f172a",
-    lineHeight: 1,
+    lineHeight: 1.1,
   },
   statLabel: {
-    marginTop: 6,
-    fontSize: 15,
+    fontSize: 12,
     color: "#64748b",
-    fontWeight: 600,
+    marginTop: 2,
   },
 };

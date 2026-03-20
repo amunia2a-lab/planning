@@ -1,3 +1,3 @@
-# Garage Planning Widget V4
+# Garage Planning Widget V5
 
-Version avec navigation aujourd'hui/demain et badge intervention coloré.
+Version avec header inversé et bandeau récapitulatif compact.
