@@ -1,6 +1,5 @@
 {
-  "name": "garage-planning-widget",
-  "version": "1.0.0",
+  "name": "garage-widget",
   "private": true,
   "scripts": {
     "dev": "next dev",
