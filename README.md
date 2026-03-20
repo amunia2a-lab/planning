@@ -1,3 +1,3 @@
-# Garage Planning Widget V6
+# Garage Planning Widget V7
 
-Bandeau récapitulatif centré, plus large, placé au-dessus des RDV.
+Plaque et client agrandis, repères colorés, underline fondu sous le modèle.

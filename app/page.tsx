@@ -5,6 +5,7 @@ type Appointment = {
   plate: string;
   client: string;
   intervention: string;
+  accent: string;
 };
 
 const appointments: Appointment[] = [
@@ -15,6 +16,7 @@ const appointments: Appointment[] = [
     plate: "AB-124-GD",
     client: "Colin",
     intervention: "Embrayage",
+    accent: "#3b82f6",
   },
   {
     id: "2",
@@ -23,6 +25,7 @@ const appointments: Appointment[] = [
     plate: "EF-456-HJ",
     client: "Martin",
     intervention: "Révision",
+    accent: "#f59e0b",
   },
   {
     id: "3",
@@ -31,6 +34,7 @@ const appointments: Appointment[] = [
     plate: "GH-782-KL",
     client: "Dupont",
     intervention: "Diagnostic",
+    accent: "#8b5cf6",
   },
   {
     id: "4",
@@ -39,7 +43,8 @@ const appointments: Appointment[] = [
     plate: "JK-903-MN",
     client: "Lucas",
     intervention: "Freinage",
-  },
+    accent: "#10b981",
+  }
 ];
 
 export default function Page() {
@@ -79,15 +84,42 @@ export default function Page() {
 
                 <div style={styles.carThumb}>🚗</div>
 
-                <div style={styles.inlineInfo}>
-                  <span style={styles.model}>{item.model}</span>
-                  <span style={styles.separator}>|</span>
-                  <span style={styles.metaText}>{item.plate}</span>
-                  <span style={styles.metaText}>{item.client}</span>
+                <div style={styles.infoBlock}>
+                  <div style={styles.infoTop}>
+                    <div style={styles.modelWrap}>
+                      <span style={styles.model}>{item.model}</span>
+                      <span
+                        style={{
+                          ...styles.modelFade,
+                          background: `linear-gradient(90deg, ${item.accent}, rgba(255,255,255,0))`,
+                        }}
+                      />
+                    </div>
+
+                    <div style={styles.metaRow}>
+                      <span
+                        style={{
+                          ...styles.plateMarker,
+                          background: item.accent,
+                        }}
+                      />
+                      <span style={styles.plate}>{item.plate}</span>
+                      <span style={styles.client}>{item.client}</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div style={styles.actions}>
-                  <span style={styles.interventionBadge}>{item.intervention}</span>
+                  <span
+                    style={{
+                      ...styles.interventionBadge,
+                      color: item.accent,
+                      border: `1px solid ${item.accent}33`,
+                      background: `${item.accent}14`,
+                    }}
+                  >
+                    {item.intervention}
+                  </span>
                   <button style={styles.moreButton}>⋯</button>
                 </div>
               </div>
@@ -230,10 +262,10 @@ const styles: Record<string, React.CSSProperties> = {
     border: "1px solid #e2e8f0",
     borderRadius: 18,
     padding: "18px 20px",
-    minHeight: 110,
+    minHeight: 90,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
   },
   summaryTitleRow: {
     display: "flex",
@@ -250,7 +282,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#334155",
   },
   summaryValue: {
-    marginTop: 18,
+    marginTop: 6,
     fontSize: 36,
     lineHeight: 1,
     fontWeight: 900,
@@ -295,29 +327,58 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 32,
     flexShrink: 0,
   },
-  inlineInfo: {
+  infoBlock: {
+    minWidth: 0,
+  },
+  infoTop: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
-    flex: 1,
-    flexWrap: "nowrap",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
+    gap: 18,
     minWidth: 0,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  },
+  modelWrap: {
+    display: "flex",
+    flexDirection: "column",
+    minWidth: "fit-content",
   },
   model: {
     fontWeight: 700,
     fontSize: 18,
     color: "#0f172a",
+    lineHeight: 1.1,
   },
-  separator: {
-    color: "#cbd5e1",
-    fontWeight: 700,
+  modelFade: {
+    width: 92,
+    height: 4,
+    marginTop: 8,
+    borderRadius: 999,
+    opacity: 0.9,
   },
-  metaText: {
+  metaRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    minWidth: 0,
+    overflow: "hidden",
+  },
+  plateMarker: {
+    width: 4,
+    height: 24,
+    borderRadius: 999,
+    flexShrink: 0,
+  },
+  plate: {
+    color: "#334155",
+    fontWeight: 800,
+    fontSize: 17,
+    letterSpacing: 0.2,
+  },
+  client: {
     color: "#475569",
-    fontWeight: 600,
-    fontSize: 15,
+    fontWeight: 700,
+    fontSize: 17,
   },
   actions: {
     display: "flex",
@@ -327,12 +388,9 @@ const styles: Record<string, React.CSSProperties> = {
   interventionBadge: {
     padding: "10px 16px",
     borderRadius: 16,
-    background: "#dbeafe",
-    color: "#1d4ed8",
     fontWeight: 700,
     fontSize: 14,
     whiteSpace: "nowrap",
-    border: "1px solid #bfdbfe",
   },
   moreButton: {
     width: 46,
