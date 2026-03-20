@@ -1,6 +1,6 @@
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="fr">
+    <html>
       <body style={{ margin: 0 }}>{children}</body>
     </html>
   );
