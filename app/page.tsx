@@ -104,6 +104,7 @@ export default function Page() {
                         }}
                       />
                       <span style={styles.plate}>{item.plate}</span>
+                      <span style={styles.separator}>|</span>
                       <span style={styles.client}>{item.client}</span>
                     </div>
                   </div>
@@ -350,30 +351,36 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.1,
   },
   modelFade: {
-    width: 92,
-    height: 4,
+    width: 140,
+    height: 5,
     marginTop: 8,
     borderRadius: 999,
-    opacity: 0.9,
+    opacity: 0.8,
   },
   metaRow: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
+    gap: 10,
     minWidth: 0,
     overflow: "hidden",
   },
   plateMarker: {
-    width: 4,
-    height: 24,
+    width: 6,
+    height: 26,
     borderRadius: 999,
+    marginRight: 6,
     flexShrink: 0,
   },
   plate: {
     color: "#334155",
-    fontWeight: 800,
+    fontWeight: 900,
     fontSize: 17,
-    letterSpacing: 0.2,
+    letterSpacing: 0.5,
+  },
+  separator: {
+    color: "#94a3b8",
+    margin: "0 4px",
+    fontWeight: 700,
   },
   client: {
     color: "#475569",

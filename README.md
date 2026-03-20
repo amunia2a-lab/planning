@@ -1,3 +1,3 @@
-# Garage Planning Widget V7
+# Garage Planning Widget V8
 
-Plaque et client agrandis, repères colorés, underline fondu sous le modèle.
+Affinage UI: séparateurs, plaque mise en avant, repères colorés, underline fondu amélioré.
