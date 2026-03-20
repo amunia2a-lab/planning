@@ -5,7 +5,6 @@ type Appointment = {
   plate: string;
   client: string;
   intervention: string;
-  status: "En cours" | "En attente" | "Terminé";
 };
 
 const appointments: Appointment[] = [
@@ -16,7 +15,6 @@ const appointments: Appointment[] = [
     plate: "AB-124-GD",
     client: "Colin",
     intervention: "Embrayage",
-    status: "En cours",
   },
   {
     id: "2",
@@ -25,7 +23,6 @@ const appointments: Appointment[] = [
     plate: "EF-456-HJ",
     client: "Martin",
     intervention: "Révision",
-    status: "En attente",
   },
   {
     id: "3",
@@ -34,7 +31,6 @@ const appointments: Appointment[] = [
     plate: "GH-782-KL",
     client: "Dupont",
     intervention: "Diagnostic",
-    status: "En cours",
   },
   {
     id: "4",
@@ -43,7 +39,6 @@ const appointments: Appointment[] = [
     plate: "JK-903-MN",
     client: "Lucas",
     intervention: "Freinage",
-    status: "Terminé",
   },
 ];
 
@@ -53,14 +48,19 @@ export default function Page() {
       <div style={styles.shell}>
         <section style={styles.widget}>
           <div style={styles.topBar}>
-            <div style={styles.titleRow}>
-              <span style={styles.calendarIcon}>📅</span>
-              <h1 style={styles.title}>Planning - Aujourd'hui</h1>
+            <div style={styles.leftHeader}>
+              <button style={styles.newButton}>+ Nouveau RDV</button>
+
+              <div style={styles.navGroup}>
+                <button style={styles.navButton}>‹</button>
+                <span style={styles.dayPill}>Aujourd'hui</span>
+                <button style={styles.navButton}>›</button>
+              </div>
             </div>
 
-            <div style={styles.topActions}>
-              <button style={styles.iconButton}>＋</button>
-              <button style={styles.iconButton}>⋮</button>
+            <div style={styles.titleRow}>
+              <span style={styles.calendarIcon}>📅</span>
+              <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
             </div>
           </div>
 
@@ -74,15 +74,12 @@ export default function Page() {
                 <div style={styles.inlineInfo}>
                   <span style={styles.model}>{item.model}</span>
                   <span style={styles.separator}>|</span>
-                  <span style={styles.plate}>{item.plate}</span>
-                  <span style={styles.dot}>•</span>
-                  <span style={styles.client}>{item.client}</span>
-                  <span style={styles.dot}>•</span>
-                  <span style={styles.intervention}>{item.intervention}</span>
+                  <span style={styles.metaText}>{item.plate}</span>
+                  <span style={styles.metaText}>{item.client}</span>
                 </div>
 
-                <div style={styles.statusArea}>
-                  <StatusBadge status={item.status} />
+                <div style={styles.actions}>
+                  <span style={styles.interventionBadge}>{item.intervention}</span>
                   <button style={styles.moreButton}>⋯</button>
                 </div>
               </div>
@@ -101,24 +98,24 @@ export default function Page() {
             <div style={styles.statCard}>
               <div style={styles.statIcon}>🚘</div>
               <div>
-                <div style={styles.statValue}>2</div>
-                <div style={styles.statLabel}>En cours</div>
+                <div style={styles.statValue}>4</div>
+                <div style={styles.statLabel}>Véhicules</div>
               </div>
             </div>
 
             <div style={styles.statCard}>
-              <div style={styles.statIcon}>⏰</div>
+              <div style={styles.statIcon}>🗓️</div>
               <div>
-                <div style={styles.statValue}>1</div>
-                <div style={styles.statLabel}>En attente</div>
+                <div style={styles.statValue}>Aujourd&apos;hui</div>
+                <div style={styles.statLabel}>Vue active</div>
               </div>
             </div>
 
             <div style={styles.statCard}>
               <div style={styles.statIcon}>✅</div>
               <div>
-                <div style={styles.statValue}>1</div>
-                <div style={styles.statLabel}>Terminée</div>
+                <div style={styles.statValue}>4</div>
+                <div style={styles.statLabel}>Prévues</div>
               </div>
             </div>
           </div>
@@ -126,28 +123,6 @@ export default function Page() {
       </div>
     </main>
   );
-}
-
-function StatusBadge({ status }: { status: Appointment["status"] }) {
-  const stylesMap: Record<Appointment["status"], React.CSSProperties> = {
-    "En cours": {
-      background: "#e8f3ff",
-      color: "#2563eb",
-      border: "1px solid #bfdbfe",
-    },
-    "En attente": {
-      background: "#fff1df",
-      color: "#b45309",
-      border: "1px solid #fcd34d",
-    },
-    "Terminé": {
-      background: "#eaf8ef",
-      color: "#15803d",
-      border: "1px solid #bbf7d0",
-    },
-  };
-
-  return <span style={{ ...styles.badge, ...stylesMap[status] }}>{status}</span>;
 }
 
 const styles: Record<string, React.CSSProperties> = {
@@ -176,8 +151,53 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 16,
+    gap: 18,
     marginBottom: 22,
+    flexWrap: "wrap",
+  },
+  leftHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    flexWrap: "wrap",
+  },
+  newButton: {
+    height: 50,
+    borderRadius: 16,
+    border: "1px solid #dbeafe",
+    background: "#eff6ff",
+    color: "#2563eb",
+    padding: "0 18px",
+    fontWeight: 800,
+    fontSize: 15,
+    cursor: "pointer",
+  },
+  navGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+  },
+  navButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    border: "1px solid #e2e8f0",
+    background: "#ffffff",
+    color: "#334155",
+    fontSize: 24,
+    cursor: "pointer",
+  },
+  dayPill: {
+    height: 44,
+    display: "inline-flex",
+    alignItems: "center",
+    padding: "0 16px",
+    borderRadius: 14,
+    background: "#f8fafc",
+    border: "1px solid #e2e8f0",
+    color: "#0f172a",
+    fontWeight: 700,
+    whiteSpace: "nowrap",
   },
   titleRow: {
     display: "flex",
@@ -193,22 +213,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 800,
     color: "#0f172a",
     letterSpacing: -0.5,
-  },
-  topActions: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-  },
-  iconButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 18,
-    border: "1px solid #e2e8f0",
-    background: "rgba(255,255,255,0.9)",
-    color: "#334155",
-    fontSize: 24,
-    boxShadow: "0 10px 24px rgba(15, 23, 42, 0.06)",
-    cursor: "pointer",
   },
   rowsWrap: {
     display: "flex",
@@ -252,7 +256,7 @@ const styles: Record<string, React.CSSProperties> = {
   inlineInfo: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
+    gap: 14,
     flex: 1,
     flexWrap: "nowrap",
     overflow: "hidden",
@@ -260,48 +264,33 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 0,
   },
   model: {
-    fontWeight: 800,
-    fontSize: 24,
-    color: "#0f172a",
-  },
-  plate: {
     fontWeight: 700,
-    color: "#1d4ed8",
-    fontSize: 16,
-  },
-  client: {
-    color: "#334155",
-    fontWeight: 600,
-    fontSize: 16,
-  },
-  intervention: {
-    color: "#64748b",
-    fontWeight: 600,
-    fontSize: 16,
+    fontSize: 18,
+    color: "#0f172a",
   },
   separator: {
     color: "#cbd5e1",
     fontWeight: 700,
   },
-  dot: {
-    color: "#94a3b8",
-    fontWeight: 700,
+  metaText: {
+    color: "#475569",
+    fontWeight: 600,
+    fontSize: 15,
   },
-  statusArea: {
+  actions: {
     display: "flex",
     alignItems: "center",
     gap: 12,
   },
-  badge: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minWidth: 126,
-    padding: "12px 16px",
-    borderRadius: 18,
-    fontSize: 16,
-    fontWeight: 800,
+  interventionBadge: {
+    padding: "10px 16px",
+    borderRadius: 16,
+    background: "#dbeafe",
+    color: "#1d4ed8",
+    fontWeight: 700,
+    fontSize: 14,
     whiteSpace: "nowrap",
+    border: "1px solid #bfdbfe",
   },
   moreButton: {
     width: 46,

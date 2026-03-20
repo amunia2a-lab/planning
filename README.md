@@ -1,3 +1,3 @@
-# Garage Planning Widget V3
+# Garage Planning Widget V4
 
-Widget planning sur une seule ligne, prêt pour GitHub + Vercel.
+Version avec navigation aujourd'hui/demain et badge intervention coloré.
