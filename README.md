@@ -1,3 +1,3 @@
-# Garage Planning Widget V5
+# Garage Planning Widget V6
 
-Version avec header inversé et bandeau récapitulatif compact.
+Bandeau récapitulatif centré, plus large, placé au-dessus des RDV.

@@ -64,6 +64,14 @@ export default function Page() {
             </div>
           </div>
 
+          <div style={styles.summaryWrap}>
+            <div style={styles.summaryBar}>
+              <SummaryCard icon="🔧" title="Interventions" value="4" />
+              <SummaryCard icon="🚗" title="Véhicules" value="4" />
+              <SummaryCard icon="✅" title="Prévues" value="4" />
+            </div>
+          </div>
+
           <div style={styles.rowsWrap}>
             {appointments.map((item) => (
               <div key={item.id} style={styles.row}>
@@ -85,35 +93,28 @@ export default function Page() {
               </div>
             ))}
           </div>
-
-          <div style={styles.statsBar}>
-            <Stat icon="🔧" value="4" label="Interventions" />
-            <Stat icon="🚗" value="4" label="Véhicules" />
-            <Stat icon="📅" value="Aujourd'hui" label="Vue active" />
-            <Stat icon="✅" value="4" label="Prévues" />
-          </div>
         </section>
       </div>
     </main>
   );
 }
 
-function Stat({
+function SummaryCard({
   icon,
+  title,
   value,
-  label,
 }: {
   icon: string;
+  title: string;
   value: string;
-  label: string;
 }) {
   return (
-    <div style={styles.statItem}>
-      <span style={styles.statIcon}>{icon}</span>
-      <div style={styles.statText}>
-        <span style={styles.statValue}>{value}</span>
-        <span style={styles.statLabel}>{label}</span>
+    <div style={styles.summaryCard}>
+      <div style={styles.summaryTitleRow}>
+        <span style={styles.summaryIcon}>{icon}</span>
+        <span style={styles.summaryTitle}>{title}</span>
       </div>
+      <div style={styles.summaryValue}>{value}</div>
     </div>
   );
 }
@@ -145,7 +146,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     gap: 18,
-    marginBottom: 22,
+    marginBottom: 18,
     flexWrap: "wrap",
   },
   titleRow: {
@@ -206,6 +207,54 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#0f172a",
     fontWeight: 700,
     whiteSpace: "nowrap",
+  },
+  summaryWrap: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  summaryBar: {
+    width: "100%",
+    maxWidth: 900,
+    display: "grid",
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: 16,
+    padding: 18,
+    background: "rgba(255,255,255,0.82)",
+    border: "1px solid #e5e7eb",
+    borderRadius: 24,
+    boxShadow: "0 12px 28px rgba(15, 23, 42, 0.05)",
+  },
+  summaryCard: {
+    background: "#ffffff",
+    border: "1px solid #e2e8f0",
+    borderRadius: 18,
+    padding: "18px 20px",
+    minHeight: 110,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  summaryTitleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+  },
+  summaryIcon: {
+    fontSize: 20,
+    lineHeight: 1,
+  },
+  summaryTitle: {
+    fontSize: 15,
+    fontWeight: 700,
+    color: "#334155",
+  },
+  summaryValue: {
+    marginTop: 18,
+    fontSize: 36,
+    lineHeight: 1,
+    fontWeight: 900,
+    color: "#0f172a",
   },
   rowsWrap: {
     display: "flex",
@@ -294,38 +343,5 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#64748b",
     fontSize: 24,
     cursor: "pointer",
-  },
-  statsBar: {
-    marginTop: 20,
-    display: "flex",
-    gap: 12,
-    flexWrap: "wrap",
-  },
-  statItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-    padding: "10px 14px",
-    borderRadius: 14,
-    background: "#ffffff",
-    border: "1px solid #e2e8f0",
-  },
-  statIcon: {
-    fontSize: 18,
-  },
-  statText: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  statValue: {
-    fontWeight: 800,
-    fontSize: 16,
-    color: "#0f172a",
-    lineHeight: 1.1,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: "#64748b",
-    marginTop: 2,
   },
 };
