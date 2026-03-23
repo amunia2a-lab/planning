@@ -1,5 +1,5 @@
 {
-  "name": "garage-widget",
+  "name": "garage-widget-plate-lookup",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,33 +1,43 @@
-import { parseTitle } from "../lib/parse";
+\"use client\";
+
+import { useState } from "react";
+import { parseTitle } from "@/lib/parse";
 
 const data = [
   {
     time: "08:30",
-    model: "Peugeot 208",
+    model: "",
     title: "AB-124-GD | Colin | 0612345678 | Embrayage",
     accent: "#3b82f6",
   },
   {
     time: "10:00",
-    model: "Clio 4",
+    model: "",
     title: "EF-456-HJ | Martin | 06 98 45 12 33 | Révision",
     accent: "#f59e0b",
-  },
-  {
-    time: "14:00",
-    model: "Audi A3",
-    title: "GH-782-KL | Dupont | 0677541028 | Diagnostic",
-    accent: "#8b5cf6",
-  },
-  {
-    time: "16:00",
-    model: "BMW Série 1",
-    title: "JK-903-MN | Lucas | 0655432109 | Freinage",
-    accent: "#10b981",
   },
 ];
 
 export default function Page() {
+  const [results, setResults] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState<Record<string, boolean>>({});
+
+  async function fetchModel(plate: string) {
+    setLoading((s) => ({ ...s, [plate]: true }));
+    try {
+      const res = await fetch(`/api/vehicle?plate=${encodeURIComponent(plate)}`);
+      const json = await res.json();
+      setResults((s) => ({
+        ...s,
+        [plate]: json.fullModel || json.model || json.brand || "Véhicule inconnu",
+      }));
+    } catch {
+      setResults((s) => ({ ...s, [plate]: "Erreur lookup" }));
+    } finally {
+      setLoading((s) => ({ ...s, [plate]: false }));
+    }
+  }
+
   return (
     <main style={styles.page}>
       <section style={styles.widget}>
@@ -36,31 +46,21 @@ export default function Page() {
             <span style={styles.calendarIcon}>📅</span>
             <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
           </div>
-
-          <div style={styles.rightHeader}>
-            <button style={styles.newButton}>+ Nouveau RDV</button>
-
-            <div style={styles.navGroup}>
-              <button style={styles.navButton}>‹</button>
-              <span style={styles.dayPill}>Aujourd&apos;hui</span>
-              <button style={styles.navButton}>›</button>
-            </div>
-          </div>
         </div>
 
         <div style={styles.rowsWrap}>
           {data.map((item, i) => {
             const p = parseTitle(item.title);
+            const model = results[p.plate] || item.model || "Modèle à récupérer";
 
             return (
               <div key={i} style={styles.row}>
                 <div style={styles.timeCard}>{item.time}</div>
-
                 <div style={styles.carThumb}>🚗</div>
 
                 <div style={styles.infoBlock}>
                   <div style={styles.modelWrap}>
-                    <span style={styles.model}>{item.model}</span>
+                    <span style={styles.model}>{model}</span>
                     <span
                       style={{
                         ...styles.modelFade,
@@ -70,12 +70,7 @@ export default function Page() {
                   </div>
 
                   <div style={styles.metaRow}>
-                    <span
-                      style={{
-                        ...styles.plateMarker,
-                        background: item.accent,
-                      }}
-                    />
+                    <span style={{ ...styles.plateMarker, background: item.accent }} />
                     <span style={styles.plate}>{p.plate}</span>
                     <span style={styles.separator}>|</span>
                     <span style={styles.client}>{p.client}</span>
@@ -87,6 +82,14 @@ export default function Page() {
                 </div>
 
                 <div style={styles.actions}>
+                  <button
+                    style={styles.lookupButton}
+                    onClick={() => fetchModel(p.plate)}
+                    disabled={!!loading[p.plate]}
+                  >
+                    {loading[p.plate] ? "Recherche..." : "Trouver modèle"}
+                  </button>
+
                   <span
                     style={{
                       ...styles.interventionBadge,
@@ -97,7 +100,6 @@ export default function Page() {
                   >
                     {p.intervention}
                   </span>
-                  <button style={styles.moreButton}>⋯</button>
                 </div>
               </div>
             );
@@ -149,50 +151,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 28,
     fontWeight: 800,
     color: "#0f172a",
-  },
-  rightHeader: {
-    display: "flex",
-    alignItems: "center",
-    gap: 14,
-    flexWrap: "wrap",
-  },
-  newButton: {
-    height: 50,
-    borderRadius: 16,
-    border: "1px solid #dbeafe",
-    background: "#eff6ff",
-    color: "#2563eb",
-    padding: "0 18px",
-    fontWeight: 800,
-    fontSize: 15,
-    cursor: "pointer",
-  },
-  navGroup: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-  },
-  navButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    border: "1px solid #e2e8f0",
-    background: "#ffffff",
-    color: "#334155",
-    fontSize: 24,
-    cursor: "pointer",
-  },
-  dayPill: {
-    height: 44,
-    display: "inline-flex",
-    alignItems: "center",
-    padding: "0 16px",
-    borderRadius: 14,
-    background: "#f8fafc",
-    border: "1px solid #e2e8f0",
-    color: "#0f172a",
-    fontWeight: 700,
-    whiteSpace: "nowrap",
   },
   rowsWrap: {
     display: "flex",
@@ -306,21 +264,21 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     gap: 12,
   },
+  lookupButton: {
+    padding: "10px 14px",
+    borderRadius: 14,
+    border: "1px solid #dbeafe",
+    background: "#eff6ff",
+    color: "#2563eb",
+    fontWeight: 700,
+    fontSize: 14,
+    cursor: "pointer",
+  },
   interventionBadge: {
     padding: "10px 16px",
     borderRadius: 16,
     fontWeight: 700,
     fontSize: 14,
     whiteSpace: "nowrap",
-  },
-  moreButton: {
-    width: 46,
-    height: 46,
-    borderRadius: 16,
-    border: "1px solid #e2e8f0",
-    background: "#f8fafc",
-    color: "#64748b",
-    fontSize: 24,
-    cursor: "pointer",
   },
 };
