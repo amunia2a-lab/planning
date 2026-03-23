@@ -4,8 +4,18 @@ import { useState } from "react";
 import { parseTitle } from "../lib/parse";
 
 const data = [
-  { time: "08:30", title: "AB-124-GD | Colin | 0612345678 | Embrayage", accent: "#3b82f6", googleUrl: "https://calendar.google.com" },
-  { time: "10:00", title: "EF-456-HJ | Martin | 06 98 45 12 33 | Révision", accent: "#f59e0b", googleUrl: "https://calendar.google.com" }
+  {
+    time: "08:30",
+    title: "AB-124-GD | Colin | 0612345678 | Embrayage",
+    accent: "#3b82f6",
+    googleUrl: "https://calendar.google.com",
+  },
+  {
+    time: "10:00",
+    title: "EF-456-HJ | Martin | 06 98 45 12 33 | Révision",
+    accent: "#f59e0b",
+    googleUrl: "https://calendar.google.com",
+  },
 ];
 
 export default function Page() {
@@ -34,11 +44,13 @@ export default function Page() {
     return date.toLocaleDateString("fr-FR", {
       weekday: "long",
       day: "numeric",
-      month: "long"
+      month: "long",
     });
   };
 
-  const openGoogle = url => window.open(url, "_blank");
+  const openGoogle = (url: string) => {
+    window.location.href = url;
+  };
 
   return (
     <main style={styles.page}>
@@ -53,7 +65,7 @@ export default function Page() {
           </div>
         </div>
 
-        {data.map((item,i)=>{
+        {data.map((item, i) => {
           const p = parseTitle(item.title);
 
           return (
@@ -63,35 +75,46 @@ export default function Page() {
               <div>
                 <div style={styles.client}>{p.client}</div>
                 <div style={styles.meta}>
-                  <span style={{...styles.bar,background:item.accent}}/>
+                  <span style={{ ...styles.bar, background: item.accent }} />
                   {p.plate} | 📞 {p.phone}
                 </div>
               </div>
 
               <div style={styles.right}>
-                <span style={{...styles.badge,color:item.accent}}>{p.intervention}</span>
-                <button onClick={()=>openGoogle(item.googleUrl)}>⋯</button>
+                <span style={{ ...styles.badge, color: item.accent }}>
+                  {p.intervention}
+                </span>
+                <button onClick={() => openGoogle(item.googleUrl)}>⋯</button>
               </div>
             </div>
-          )
+          );
         })}
       </section>
     </main>
   );
 }
 
-const styles = {
-  page:{padding:30,background:"#f6f8fc"},
-  widget:{maxWidth:900,margin:"0 auto",background:"#fff",padding:20,borderRadius:20},
-  top:{display:"flex",justifyContent:"space-between",marginBottom:20},
-  btn:{padding:"10px 15px"},
-  nav:{display:"flex",alignItems:"center",gap:10},
-  navBtn:{padding:"6px 10px"},
-  day:{fontWeight:700},
-  row:{display:"grid",gridTemplateColumns:"100px 1fr auto",gap:15,alignItems:"center",padding:15,border:"1px solid #eee",borderRadius:12,marginBottom:10},
-  client:{fontWeight:800},
-  meta:{display:"flex",gap:8,alignItems:"center"},
-  bar:{width:5,height:20},
-  right:{display:"flex",gap:10,alignItems:"center"},
-  badge:{padding:"5px 10px",border:"1px solid #ddd"}
+const styles: Record<string, React.CSSProperties> = {
+  page: { padding: 30, background: "#f6f8fc", minHeight: "100vh" },
+  widget: { maxWidth: 900, margin: "0 auto", background: "#fff", padding: 20, borderRadius: 20 },
+  top: { display: "flex", justifyContent: "space-between", marginBottom: 20 },
+  btn: { padding: "10px 15px", cursor: "pointer" },
+  nav: { display: "flex", alignItems: "center", gap: 10 },
+  navBtn: { padding: "6px 10px", cursor: "pointer" },
+  day: { fontWeight: 700 },
+  row: {
+    display: "grid",
+    gridTemplateColumns: "100px 1fr auto",
+    gap: 15,
+    alignItems: "center",
+    padding: 15,
+    border: "1px solid #eee",
+    borderRadius: 12,
+    marginBottom: 10,
+  },
+  client: { fontWeight: 800 },
+  meta: { display: "flex", gap: 8, alignItems: "center" },
+  bar: { width: 5, height: 20, borderRadius: 10 },
+  right: { display: "flex", gap: 10, alignItems: "center" },
+  badge: { padding: "5px 10px", border: "1px solid #ddd", borderRadius: 10 },
 };
