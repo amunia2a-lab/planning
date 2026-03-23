@@ -1,5 +1,5 @@
 {
-  "name": "garage-widget-plate-lookup",
+  "name": "garage-widget-client-focused",
   "private": true,
   "scripts": {
     "dev": "next dev",
