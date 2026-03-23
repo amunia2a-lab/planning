@@ -1,5 +1,5 @@
 {
-  "name": "garage-widget-client-focused",
+  "name": "garage-widget-clean",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,5 +1,5 @@
 export function parseTitle(title: string) {
-  const parts = title.split("|").map((s) => s.trim());
+  const parts = title.split("|").map(s => s.trim());
 
   const formatPhone = (p: string) => {
     const digits = p.replace(/\D/g, "");
@@ -13,6 +13,6 @@ export function parseTitle(title: string) {
     plate: parts[0] || "",
     client: parts[1] || "",
     phone: formatPhone(parts[2] || ""),
-    intervention: parts[3] || "",
+    intervention: parts[3] || ""
   };
 }
