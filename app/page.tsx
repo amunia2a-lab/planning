@@ -87,12 +87,14 @@ export default function Page() {
       <section style={styles.widget}>
         <div style={styles.topBar}>
           <div style={styles.titleRow}>
-            <span style={styles.calendarIcon}>📅</span>
+            <span style={styles.calendarIcon}>🗓️</span>
             <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
           </div>
 
           <div style={styles.rightHeader}>
-            <button style={styles.newButton} onClick={createNewAppointment}>+ Nouveau RDV</button>
+            <button style={styles.newButton} onClick={createNewAppointment}>
+              + Nouveau RDV
+            </button>
 
             <div style={styles.navGroup}>
               <button onClick={previousDay} style={styles.navButton}>‹</button>
@@ -110,10 +112,10 @@ export default function Page() {
               <div key={i} style={styles.row}>
                 <div style={styles.timeCard}>{item.time}</div>
 
-                <div style={styles.infoBlock}>
-                  <div style={styles.clientBig}>{p.client}</div>
+                <div style={styles.inlineInfo}>
+                  <span style={styles.clientBig}>{p.client}</span>
 
-                  <div style={styles.metaRow}>
+                  <div style={styles.metaInline}>
                     <span style={{ ...styles.plateMarker, background: item.accent }} />
                     <span style={styles.plate}>{p.plate}</span>
                     <span style={styles.separator}>|</span>
@@ -121,14 +123,13 @@ export default function Page() {
                       <span style={styles.phoneIcon}>📞</span>
                       <span style={styles.phone}>{p.phone}</span>
                     </span>
+                    <span
+                      style={{
+                        ...styles.fadeLine,
+                        background: `linear-gradient(90deg, ${item.accent}, rgba(255,255,255,0))`,
+                      }}
+                    />
                   </div>
-
-                  <span
-                    style={{
-                      ...styles.fadeLine,
-                      background: `linear-gradient(90deg, ${item.accent}, rgba(255,255,255,0))`,
-                    }}
-                  />
                 </div>
 
                 <div style={styles.actions}>
@@ -148,6 +149,7 @@ export default function Page() {
                     style={styles.moreButton}
                     onClick={() => openGoogle(item.googleUrl)}
                     title="Ouvrir dans Google Agenda"
+                    aria-label="Ouvrir dans Google Agenda"
                   >
                     ⋯
                   </button>
@@ -164,199 +166,205 @@ export default function Page() {
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
-    padding: "28px",
+    padding: "8px 10px",
     margin: 0,
-    background:
-      "radial-gradient(circle at left bottom, rgba(191,219,254,0.55), transparent 28%), linear-gradient(180deg, #f6f8fc 0%, #eef3fa 100%)",
+    background: "#f7f6f3",
     fontFamily:
-      'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    color: "#191919",
   },
   widget: {
-    maxWidth: 1280,
+    maxWidth: 1160,
     margin: "0 auto",
-    background: "rgba(255,255,255,0.72)",
-    border: "1px solid rgba(255,255,255,0.85)",
-    borderRadius: 34,
-    padding: 28,
-    boxShadow: "0 28px 80px rgba(15, 23, 42, 0.10)",
-    backdropFilter: "blur(18px)",
+    background: "#ffffff",
+    border: "1px solid #e9e7e3",
+    borderRadius: 16,
+    padding: 14,
+    boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
   },
   topBar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 18,
-    marginBottom: 22,
+    gap: 14,
+    marginBottom: 14,
     flexWrap: "wrap",
   },
   titleRow: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
+    gap: 10,
   },
   calendarIcon: {
-    fontSize: 28,
+    fontSize: 23,
   },
   title: {
     margin: 0,
-    fontSize: 28,
-    fontWeight: 800,
-    color: "#0f172a",
-    letterSpacing: -0.5,
+    fontSize: 22,
+    fontWeight: 700,
+    color: "#191919",
+    letterSpacing: -0.3,
   },
   rightHeader: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
+    gap: 10,
     flexWrap: "wrap",
   },
   newButton: {
-    height: 50,
-    borderRadius: 16,
-    border: "1px solid #dbeafe",
-    background: "#eff6ff",
+    height: 40,
+    borderRadius: 12,
+    border: "1px solid #e2e0db",
+    background: "#ffffff",
     color: "#2563eb",
-    padding: "0 18px",
-    fontWeight: 800,
-    fontSize: 15,
+    padding: "0 14px",
+    fontWeight: 700,
+    fontSize: 14,
     cursor: "pointer",
-    boxShadow: "0 10px 24px rgba(59,130,246,0.10)",
   },
   navGroup: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
+    gap: 8,
   },
   navButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    border: "1px solid #e2e8f0",
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    border: "1px solid #e2e0db",
     background: "#ffffff",
     color: "#334155",
-    fontSize: 24,
+    fontSize: 22,
     cursor: "pointer",
-    boxShadow: "0 8px 18px rgba(15,23,42,0.05)",
+    lineHeight: 1,
   },
   dayPill: {
-    height: 44,
+    height: 38,
     display: "inline-flex",
     alignItems: "center",
-    padding: "0 16px",
-    borderRadius: 14,
-    background: "#f8fafc",
-    border: "1px solid #e2e8f0",
-    color: "#0f172a",
+    padding: "0 14px",
+    borderRadius: 12,
+    background: "#ffffff",
+    border: "1px solid #e2e0db",
+    color: "#191919",
     fontWeight: 700,
     whiteSpace: "nowrap",
+    fontSize: 14,
   },
   rowsWrap: {
     display: "flex",
     flexDirection: "column",
-    gap: 14,
+    gap: 10,
   },
   row: {
     display: "grid",
-    gridTemplateColumns: "140px 1fr auto",
+    gridTemplateColumns: "128px 1fr auto",
     alignItems: "center",
-    gap: 18,
-    background: "rgba(255,255,255,0.88)",
-    border: "1px solid #e5e7eb",
-    borderRadius: 28,
-    padding: 18,
-    boxShadow: "0 10px 26px rgba(15, 23, 42, 0.05)",
+    gap: 14,
+    background: "#ffffff",
+    border: "1px solid #e9e7e3",
+    borderRadius: 14,
+    padding: 14,
   },
   timeCard: {
-    height: 74,
-    borderRadius: 20,
-    background: "#f8fafc",
+    height: 62,
+    borderRadius: 14,
+    background: "#f7f6f3",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#0f172a",
-    fontWeight: 800,
-    fontSize: 20,
+    color: "#191919",
+    fontWeight: 700,
+    fontSize: 18,
     whiteSpace: "nowrap",
   },
-  infoBlock: {
+  inlineInfo: {
     minWidth: 0,
-  },
-  clientBig: {
-    fontWeight: 800,
-    fontSize: 20,
-    color: "#0f172a",
-    lineHeight: 1.1,
-  },
-  metaRow: {
     display: "flex",
     alignItems: "center",
     gap: 18,
-    marginTop: 10,
+  },
+  clientBig: {
+    fontWeight: 700,
+    fontSize: 17,
+    color: "#191919",
+    whiteSpace: "nowrap",
+    minWidth: 88,
+  },
+  metaInline: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
     minWidth: 0,
     overflow: "hidden",
+    position: "relative",
+    flex: 1,
+    paddingBottom: 6,
   },
   plateMarker: {
-    width: 6,
-    height: 26,
+    width: 5,
+    height: 24,
     borderRadius: 999,
-    marginRight: 10,
     flexShrink: 0,
   },
   plate: {
-    color: "#334155",
-    fontWeight: 900,
-    fontSize: 17,
-    letterSpacing: 0.6,
-    marginRight: 12,
+    color: "#3f4b62",
+    fontWeight: 800,
+    fontSize: 15,
+    letterSpacing: 0.4,
+    whiteSpace: "nowrap",
   },
   separator: {
-    color: "#94a3b8",
-    margin: "0 10px",
+    color: "#9aa3b2",
     fontWeight: 700,
+    whiteSpace: "nowrap",
   },
   phoneWrap: {
     display: "inline-flex",
     alignItems: "center",
-    gap: 8,
-    marginLeft: 8,
+    gap: 7,
+    whiteSpace: "nowrap",
   },
   phoneIcon: {
-    fontSize: 15,
+    fontSize: 14,
     lineHeight: 1,
   },
   phone: {
-    color: "#64748b",
+    color: "#657188",
     fontWeight: 600,
-    fontSize: 16,
+    fontSize: 14,
   },
   fadeLine: {
-    width: 140,
-    height: 5,
-    marginTop: 10,
+    position: "absolute",
+    left: 0,
+    bottom: 0,
+    width: 124,
+    height: 4,
     borderRadius: 999,
-    opacity: 0.8,
-    display: "block",
+    opacity: 0.9,
+    pointerEvents: "none",
   },
   actions: {
     display: "flex",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
   },
   interventionBadge: {
-    padding: "10px 16px",
-    borderRadius: 16,
+    padding: "9px 14px",
+    borderRadius: 14,
     fontWeight: 700,
     fontSize: 14,
     whiteSpace: "nowrap",
   },
   moreButton: {
-    width: 46,
-    height: 46,
-    borderRadius: 16,
-    border: "1px solid #e2e8f0",
-    background: "#f8fafc",
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    border: "1px solid #e2e0db",
+    background: "#ffffff",
     color: "#64748b",
-    fontSize: 24,
+    fontSize: 22,
     cursor: "pointer",
+    lineHeight: 1,
   },
 };

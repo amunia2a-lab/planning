@@ -1,6 +1,11 @@
-# Garage Widget Premium Working V2
+# Garage Widget Final Notion Inline
 
-Ajout :
-- bouton "+ Nouveau RDV" fonctionnel
-- ouvre Google Agenda sur un nouvel événement
-- prérempli sur la date affichée par les flèches
+Version finale :
+- style Notion light
+- fond arrière type Notion
+- lignes sur une seule ligne
+- couleurs différentes par ligne
+- plaque mise en valeur
+- flèches < > fonctionnelles
+- + Nouveau RDV fonctionnel
+- ... ouvre Google Agenda
