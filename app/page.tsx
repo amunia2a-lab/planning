@@ -4,8 +4,8 @@ import { useState } from "react";
 import { parseTitle } from "../lib/parse";
 
 const data = [
-  { time: "08:30", title: "AB-124-GD | Colin | 0612345678 | Embrayage", accent: "#3b82f6" },
-  { time: "10:00", title: "EF-456-HJ | Martin | 06 98 45 12 33 | Révision", accent: "#f59e0b" }
+  { time: "08:30", title: "AB-124-GD | Colin | 0612345678 | Embrayage", accent: "#3b82f6", googleUrl: "https://calendar.google.com" },
+  { time: "10:00", title: "EF-456-HJ | Martin | 06 98 45 12 33 | Révision", accent: "#f59e0b", googleUrl: "https://calendar.google.com" }
 ];
 
 export default function Page() {
@@ -25,26 +25,30 @@ export default function Page() {
 
   const formatDay = () => {
     const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
     if (date.toDateString() === today.toDateString()) return "Aujourd'hui";
+    if (date.toDateString() === tomorrow.toDateString()) return "Demain";
+
     return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
   };
 
+  const openGoogle = (url) => {
+    window.location.href = url;
+  };
+
   return (
-    <main style={{
-      padding: 10,
-      background: "transparent",
-      minHeight: "100vh",
-      fontFamily: "Inter, sans-serif"
-    }}>
-      <div style={{maxWidth: 800, margin: "0 auto"}}>
+    <main style={styles.page}>
+      <section style={styles.widget}>
 
-        <div style={{display:"flex", justifyContent:"space-between", marginBottom:12}}>
-          <button style={btn}>+ Nouveau RDV</button>
+        <div style={styles.topBar}>
+          <button style={styles.newButton}>+ Nouveau RDV</button>
 
-          <div style={{display:"flex", gap:8, alignItems:"center"}}>
-            <button onClick={previousDay}>‹</button>
-            <strong>{formatDay()}</strong>
-            <button onClick={nextDay}>›</button>
+          <div style={styles.navGroup}>
+            <button onClick={previousDay} style={styles.navButton}>‹</button>
+            <span style={styles.day}>{formatDay()}</span>
+            <button onClick={nextDay} style={styles.navButton}>›</button>
           </div>
         </div>
 
@@ -52,48 +56,75 @@ export default function Page() {
           const p = parseTitle(item.title);
 
           return (
-            <div key={i} style={{
-              display:"grid",
-              gridTemplateColumns:"70px 1fr auto",
-              padding:"10px 12px",
-              borderRadius:10,
-              marginBottom:8,
-              background:"rgba(255,255,255,0.7)",
-              backdropFilter:"blur(6px)",
-              border:"1px solid rgba(0,0,0,0.05)"
-            }}>
-              <div>{item.time}</div>
+            <div key={i} style={styles.row}>
+              <div style={styles.time}>{item.time}</div>
 
               <div>
-                <div style={{fontWeight:700}}>{p.client}</div>
-                <div style={{fontSize:12, opacity:0.7}}>
+                <div style={styles.client}>{p.client}</div>
+                <div style={styles.meta}>
+                  <span style={{...styles.bar, background:item.accent}}/>
                   {p.plate} | 📞 {p.phone}
                 </div>
               </div>
 
-              <div style={{display:"flex", gap:8}}>
-                <span style={{
-                  padding:"4px 8px",
-                  borderRadius:6,
-                  fontSize:12,
-                  background:"#eee"
-                }}>
-                  {p.intervention}
-                </span>
-                <button>⋯</button>
+              <div style={styles.right}>
+                <span style={styles.badge}>{p.intervention}</span>
+                <button onClick={()=>openGoogle(item.googleUrl)}>⋯</button>
               </div>
             </div>
           )
         })}
-      </div>
+      </section>
     </main>
   );
 }
 
-const btn = {
-  padding:"6px 10px",
-  borderRadius:6,
-  border:"1px solid #ddd",
-  background:"white",
-  cursor:"pointer"
+const styles = {
+  page:{
+    background:"transparent",
+    padding:20,
+    minHeight:"100vh"
+  },
+  widget:{
+    maxWidth:900,
+    margin:"0 auto",
+    background:"#fff",
+    borderRadius:20,
+    padding:20
+  },
+  topBar:{
+    display:"flex",
+    justifyContent:"space-between",
+    marginBottom:20
+  },
+  newButton:{
+    padding:"10px 14px",
+    borderRadius:10,
+    border:"1px solid #ddd",
+    cursor:"pointer"
+  },
+  navGroup:{
+    display:"flex",
+    gap:10,
+    alignItems:"center"
+  },
+  navButton:{
+    padding:"6px 10px",
+    cursor:"pointer"
+  },
+  day:{fontWeight:700},
+  row:{
+    display:"grid",
+    gridTemplateColumns:"100px 1fr auto",
+    padding:12,
+    border:"1px solid #eee",
+    borderRadius:12,
+    marginBottom:10
+  },
+  time:{fontWeight:700},
+  client:{fontWeight:800},
+  meta:{display:"flex",gap:8,alignItems:"center"},
+  bar:{width:5,height:20},
+  right:{display:"flex",gap:10,alignItems:"center"},
+  badge:{padding:"5px 10px",border:"1px solid #ddd",borderRadius:8}
 };
