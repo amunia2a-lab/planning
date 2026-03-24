@@ -168,7 +168,7 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: "100vh",
     padding: "8px 10px",
     margin: 0,
-    background: "#f7f6f3",
+    background: "transparent",
     fontFamily:
       'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
     color: "#191919",
