@@ -30,6 +30,17 @@ const data = [
   },
 ];
 
+function formatGoogleDate(date: Date, hour = 8, minute = 0) {
+  const d = new Date(date);
+  d.setHours(hour, minute, 0, 0);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const h = String(d.getHours()).padStart(2, "0");
+  const m = String(d.getMinutes()).padStart(2, "0");
+  return `${year}${month}${day}T${h}${m}00`;
+}
+
 export default function Page() {
   const [date, setDate] = useState(new Date());
 
@@ -64,6 +75,13 @@ export default function Page() {
     window.location.href = url;
   };
 
+  const createNewAppointment = () => {
+    const start = formatGoogleDate(date, 8, 0);
+    const end = formatGoogleDate(date, 9, 0);
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${start}/${end}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <main style={styles.page}>
       <section style={styles.widget}>
@@ -74,7 +92,7 @@ export default function Page() {
           </div>
 
           <div style={styles.rightHeader}>
-            <button style={styles.newButton}>+ Nouveau RDV</button>
+            <button style={styles.newButton} onClick={createNewAppointment}>+ Nouveau RDV</button>
 
             <div style={styles.navGroup}>
               <button onClick={previousDay} style={styles.navButton}>‹</button>

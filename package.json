@@ -1,5 +1,5 @@
 {
-  "name": "garage-widget-premium-working",
+  "name": "garage-widget-premium-working-v2",
   "private": true,
   "scripts": {
     "dev": "next dev",
