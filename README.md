@@ -1,8 +1,6 @@
-# Garage Widget Premium Working
+# Garage Widget Premium Working V2
 
-Version premium avec :
-- design glassmorphism
-- client en gros
-- plaque + téléphone
-- flèches de navigation fonctionnelles
-- bouton ... qui ouvre Google Agenda
+Ajout :
+- bouton "+ Nouveau RDV" fonctionnel
+- ouvre Google Agenda sur un nouvel événement
+- prérempli sur la date affichée par les flèches
