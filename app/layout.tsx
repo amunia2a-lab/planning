@@ -1,4 +1,4 @@
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body style={{ margin: 0, background: "transparent" }}>
