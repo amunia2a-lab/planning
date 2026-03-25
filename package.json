@@ -1,5 +1,5 @@
 {
-  "name": "garage-widget-google-live",
+  "name": "garage-widget",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,10 +11,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "googleapis": "^133.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/react": "^18.2.66",
+    "@types/node": "^20.12.12"
   }
-}
-"devDependencies": {
-  "typescript": "^5.4.5",
-  "@types/react": "^18.2.66",
-  "@types/node": "^20.12.12"
 }
