@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+
 import { google } from "googleapis";
 
 export async function GET() {
@@ -12,21 +13,29 @@ export async function GET() {
   const calendar = google.calendar({ version: "v3", auth });
 
   const now = new Date();
-  const start = new Date(now.setHours(0,0,0,0)).toISOString();
-  const end = new Date(now.setHours(23,59,59,999)).toISOString();
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(now);
+  end.setHours(23, 59, 59, 999);
 
   const res = await calendar.events.list({
     calendarId: process.env.GOOGLE_CALENDAR_ID,
-    timeMin: start,
-    timeMax: end,
+    timeMin: start.toISOString(),
+    timeMax: end.toISOString(),
     singleEvents: true,
-    orderBy: "startTime"
+    orderBy: "startTime",
   });
 
-  const events = res.data.items.map(e => ({
-    time: new Date(e.start.dateTime).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),
-    title: e.summary,
-    url: e.htmlLink
+  const events = (res.data.items || []).map((e) => ({
+    time: e.start?.dateTime
+      ? new Date(e.start.dateTime).toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "",
+    title: e.summary || "",
+    url: e.htmlLink || "",
   }));
 
   return Response.json(events);
