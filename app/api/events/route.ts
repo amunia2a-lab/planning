@@ -3,41 +3,54 @@ export const revalidate = 0;
 
 import { google } from "googleapis";
 
-export async function GET() {
-  const auth = new google.auth.JWT(
-    process.env.GOOGLE_CLIENT_EMAIL,
-    undefined,
-    process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-    ["https://www.googleapis.com/auth/calendar.readonly"]
-  );
+export async function GET(req: Request) {
+  try {
+    const auth = new google.auth.JWT(
+      process.env.GOOGLE_CLIENT_EMAIL,
+      undefined,
+      process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      ["https://www.googleapis.com/auth/calendar.readonly"]
+    );
 
-  const calendar = google.calendar({ version: "v3", auth });
+    const calendar = google.calendar({ version: "v3", auth });
 
-  const now = new Date();
-  const start = new Date(now);
-  start.setHours(0, 0, 0, 0);
+    const { searchParams } = new URL(req.url);
+    const day = searchParams.get("day");
 
-  const end = new Date(now);
-  end.setHours(23, 59, 59, 999);
+    const base = day ? new Date(`${day}T12:00:00`) : new Date();
 
-  const res = await calendar.events.list({
-    calendarId: process.env.GOOGLE_CALENDAR_ID,
-    timeMin: start.toISOString(),
-    timeMax: end.toISOString(),
-    singleEvents: true,
-    orderBy: "startTime",
-  });
+    const start = new Date(base);
+    start.setHours(0, 0, 0, 0);
 
-  const events = (res.data.items || []).map((e) => ({
-    time: e.start?.dateTime
-      ? new Date(e.start.dateTime).toLocaleTimeString("fr-FR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      : "",
-    title: e.summary || "",
-    url: e.htmlLink || "",
-  }));
+    const end = new Date(base);
+    end.setHours(23, 59, 59, 999);
 
-  return Response.json(events);
+    const res = await calendar.events.list({
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      timeMin: start.toISOString(),
+      timeMax: end.toISOString(),
+      singleEvents: true,
+      orderBy: "startTime",
+    });
+
+    const events = (res.data.items || []).map((e) => ({
+      time: e.start?.dateTime
+        ? new Date(e.start.dateTime).toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "",
+      title: e.summary || "",
+      url: e.htmlLink || "",
+    }));
+
+    return Response.json(events);
+  } catch (error: any) {
+    return Response.json(
+      {
+        error: error?.message || "Erreur Google Agenda",
+      },
+      { status: 500 }
+    );
+  }
 }
