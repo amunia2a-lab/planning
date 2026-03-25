@@ -42,14 +42,13 @@ export async function GET(req: Request) {
         : "",
       title: e.summary || "",
       url: e.htmlLink || "",
+      colorId: e.colorId || "",
     }));
 
     return Response.json(events);
   } catch (error: any) {
     return Response.json(
-      {
-        error: error?.message || "Erreur Google Agenda",
-      },
+      { error: error?.message || "Erreur Google Agenda" },
       { status: 500 }
     );
   }
