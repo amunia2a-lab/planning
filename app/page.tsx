@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Wrench } from "lucide-react";
 import { parseTitle, formatPhone } from "../lib/parse";
 
 type EventItem = {
@@ -21,7 +22,7 @@ const COLORS: Record<string, { bg: string; fg: string }> = {
   "8": { bg: "#e1e1e1", fg: "#1d1d1d" },
   "9": { bg: "#5484ed", fg: "#ffffff" },
   "10": { bg: "#51b749", fg: "#ffffff" },
-  "11": { bg: "#dc2127", fg: "#ffffff" },
+  "11": { bg: "#dc2127", fg: "#ffffff" }
 };
 
 function formatGoogleDate(date: Date, hour = 8, minute = 0) {
@@ -42,24 +43,6 @@ function hexToRgba(hex: string, alpha: number) {
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function PlanningIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#787774"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ display: "block" }}
-    >
-      <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-3 3-2-2 3-3z" />
-    </svg>
-  );
 }
 
 export default function Page() {
@@ -145,7 +128,9 @@ export default function Page() {
       <section style={styles.widget}>
         <div style={styles.topBar}>
           <div style={styles.titleRow}>
-            <span style={styles.iconWrap}><PlanningIcon /></span>
+            <span style={styles.iconWrap}>
+              <Wrench size={20} strokeWidth={1.8} color="#787774" />
+            </span>
             <h1 style={styles.title}>Planning - Aujourd&apos;hui</h1>
           </div>
 
@@ -264,7 +249,7 @@ const styles: Record<string, React.CSSProperties> = {
   iconWrap: {
     display: "flex",
     alignItems: "center",
-    opacity: 0.95,
+    opacity: 0.9,
   },
   title: {
     margin: 0,

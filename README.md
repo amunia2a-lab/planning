@@ -1,13 +1,12 @@
-# Garage Agenda Widget Notion — Clean Final
+# Garage Agenda Widget Notion — Lucide Icons
 
-Version finale propre :
+Version finale avec :
+- Google Agenda connecté en live
 - design compact type Notion
-- icône fine style Notion
+- icône style Notion via `lucide-react`
 - fond transparent autour du widget
-- couleurs reprises depuis Google Agenda (`colorId`)
-- bouton `...` ouvre le bon événement
-- flèches `< >` changent le jour
-- `+ Nouveau RDV` ouvre la création d'un événement Google Agenda
+- couleurs Google Agenda (`colorId`) pour la barre de plaque et le badge intervention
+- boutons `+ Nouveau RDV`, `< >` et `...` fonctionnels
 
 ## Format du titre Google Agenda
 
