@@ -17,7 +17,9 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const day = searchParams.get("day");
 
-    const base = day ? new Date(`${day}T12:00:00`) : new Date();
+    const base = day
+  ? new Date(day + "T00:00:00")
+  : new Date();
 
     const start = new Date(base);
     start.setHours(0, 0, 0, 0);
