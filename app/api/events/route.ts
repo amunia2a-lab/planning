@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const auth = new google.auth.JWT(
       process.env.GOOGLE_CLIENT_EMAIL,
       undefined,
-      process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      process.env.GOOGLE_PRIVATE_KEY?.replace(/\n/g, "\n"),
       ["https://www.googleapis.com/auth/calendar.readonly"]
     );
 
@@ -17,9 +17,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const day = searchParams.get("day");
 
-    const base = day
-  ? new Date(day + "T00:00:00")
-  : new Date();
+    const base = day ? new Date(day + "T00:00:00") : new Date();
 
     const start = new Date(base);
     start.setHours(0, 0, 0, 0);
@@ -40,6 +38,7 @@ export async function GET(req: Request) {
         ? new Date(e.start.dateTime).toLocaleTimeString("fr-FR", {
             hour: "2-digit",
             minute: "2-digit",
+            timeZone: "Europe/Paris",
           })
         : "",
       title: e.summary || "",
